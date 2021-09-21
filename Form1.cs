@@ -24,7 +24,7 @@ namespace Vpacker
         // What files to look for, in the aforementioned folders.
         public List<string> file_types = new List<string> { "vcs", "mp3", "wav", "rc", "scr", "vmt", "vtf", "mdl", "phy", "vtx", "vvd", "ani", "pcf", "vcd", "txt", "res", "vfont", "cur", "dat", "bik", "mov", "bsp", "nav", "lst", "lmp", "vfe", "ttf" };
         // which vpk.exe to use. do not use \!
-        public string vpk_path = "D:/SteamLibrary/steamapps/common/Source SDK Base 2013 Multiplayer/bin/vpk.exe";
+        public string vpk_path = "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
         public Form1()
         {
@@ -40,13 +40,28 @@ namespace Vpacker
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (File.Exists("D:\\SteamLibrary\\steamapps\\common\\Team Fortress 2" + "\\bin\\hlmv.exe"))
+            if (File.Exists(vpk_path + "\\bin\\vpk.exe"))
             {
                 /*Process vpak = new Process();
                 vpak.StartInfo.FileName = "CMD.exe";
                 vpak.StartInfo.Arguments = "/c cd /d " + "D:\\SteamLibrary\\" + "\\steamapps\\common\\" + "Team Fortress 2" + "\\bin && start \"\" hlmv.exe -game \"" + "D:\\SteamLibrary\\" + "\\steamapps\\common\\" + "Team Fortress 2" + "\\" + "tf" + "\"";
                 vpak.Start();*/
                 createfile();
+                //vpk_path
+                string fileName = cwd + "\\test.txt";
+                Process vpak = new Process();
+
+                //"/c cd /d " + "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer" + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\""
+                vpak.StartInfo.FileName = vpk_path + "\\bin\\vpk.exe";
+                //vpak.StartInfo.Arguments = "/c cd /d " + vpk_path + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
+
+                vpak.StartInfo.Arguments = "-M " + "a " + "pak01 " + "@" + fileName + "\"";
+                vpak.Start();
+                if (File.Exists(fileName) && vpak.HasExited)
+                {
+                    File.Delete(fileName);
+                }
+
             }
         }
 
@@ -176,8 +191,6 @@ namespace Vpacker
                 using (FileStream fs = File.Create(fileName))
                 {
                     // Add some text to file
-                    // 
-                   // var extensions = new List<string> { ".txt", ".xml" };
                     foreach (var user_folder in target_folders)
                     {
                         foreach (string f in Directory.GetFiles(user_folder, "*.*", SearchOption.AllDirectories))
@@ -185,17 +198,7 @@ namespace Vpacker
                             string extension = Path.GetExtension(f);
 
                             var temp = extension.Split('.');
-                            /*StringBuilder sb = new StringBuilder();
-                            sb.Append("index 1: ");
-                            sb.AppendLine(temp[1].ToString());
-
-                            sb.AppendLine("\n");
-
-                           
-                            richTextBox1.Text = sb.ToString();*/
-
-                            //var tempLen = temp.Length;
-                            //extension = temp[0];
+                            
 #if true
                             if (extension != null && file_types.Contains(temp[1].ToString()))
                             {
@@ -214,14 +217,14 @@ namespace Vpacker
                 }
 
                 // Open the stream and read it back.    
-                using (StreamReader sr = File.OpenText(fileName))
+                /*using (StreamReader sr = File.OpenText(fileName))
                 {
                     string s = "";
                     while ((s = sr.ReadLine()) != null)
                     {
                         Console.WriteLine(s);
                     }
-                }
+                }*/
             }
             catch (Exception Ex)
             {
