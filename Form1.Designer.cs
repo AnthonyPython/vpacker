@@ -29,6 +29,7 @@ namespace Vpacker
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.BrowseGameDirectory = new System.Windows.Forms.Button();
@@ -46,10 +47,12 @@ namespace Vpacker
             this.checkBoxMultichunk = new System.Windows.Forms.CheckBox();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.versionlabel = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label5 = new System.Windows.Forms.Label();
             this.tabVpack.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -108,6 +111,7 @@ namespace Vpacker
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.textBoxExtraParams);
             this.tabPage1.Controls.Add(this.textBoxCNBounds);
@@ -157,9 +161,10 @@ namespace Vpacker
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(171, 262);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(108, 13);
+            this.label3.Size = new System.Drawing.Size(109, 13);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Chunk n-byte bounds";
+            this.label3.Text = "Chunk n-byte Bounds";
+            this.toolTip1.SetToolTip(this.label3, "Align the files within the vpk chunk on n-byte boundary.");
             // 
             // label2
             // 
@@ -169,6 +174,7 @@ namespace Vpacker
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "ChunkSize";
+            this.toolTip1.SetToolTip(this.label2, "How big each vpk is in MB\'s.");
             // 
             // textBoxCSize
             // 
@@ -185,9 +191,11 @@ namespace Vpacker
             this.checkBoxMultichunk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxMultichunk.Location = new System.Drawing.Point(26, 262);
             this.checkBoxMultichunk.Name = "checkBoxMultichunk";
-            this.checkBoxMultichunk.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxMultichunk.Size = new System.Drawing.Size(79, 17);
             this.checkBoxMultichunk.TabIndex = 6;
-            this.checkBoxMultichunk.Text = "Multichunk";
+            this.checkBoxMultichunk.Text = "MultiChunk";
+            this.toolTip1.SetToolTip(this.checkBoxMultichunk, "When Enabled creates multichunk vpk\'s like for a source mod.\r\nWhen off it behaves" +
+        " as if you dragged the current folder onto vpk.exe.");
             this.checkBoxMultichunk.UseVisualStyleBackColor = true;
             // 
             // richTextBoxLog
@@ -211,6 +219,15 @@ namespace Vpacker
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Info";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(11, 163);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(91, 92);
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // label6
             // 
@@ -240,14 +257,19 @@ namespace Vpacker
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
-            // pictureBox1
+            // toolTip1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(11, 163);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(91, 92);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.toolTip1.IsBalloon = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(26, 243);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(451, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Warning: Do not change  these unless you know what you are doing! You have been w" +
+    "arned.";
             // 
             // Form1
             // 
@@ -290,6 +312,8 @@ namespace Vpacker
         private System.Windows.Forms.Label versionlabel;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

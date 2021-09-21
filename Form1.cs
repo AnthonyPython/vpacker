@@ -23,7 +23,7 @@ namespace Vpacker
         public string[] target_folders = { "cfg", "classes", "materials", "models", "resource", "media", "particles", "scripts", "maps", "expressions", "scenes", "shaders", "sound" };
         // What files to look for, in the aforementioned folders.
         public List<string> file_types = new List<string> { "vcs", "mp3", "wav", "rc", "scr", "vmt", "vtf", "mdl", "phy", "vtx", "vvd", "ani", "pcf", "vcd", "txt", "res", "vfont", "cur", "dat", "bik", "mov", "bsp", "nav", "lst", "lmp", "vfe", "ttf" };
-        // which vpk.exe to use. do not use \!
+        // which vpk.exe to use.
         public string vpk_path = "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
         public int m_iCSize = 200;
@@ -37,7 +37,7 @@ namespace Vpacker
 
         public static Steam steam = new Steam();
 
-        public static string version = "1.0.0";
+        public static string version = "0.1";
 
         public string cwd = Directory.GetCurrentDirectory().ToString();
 
@@ -79,12 +79,14 @@ namespace Vpacker
                 {
                     Process vpak = new Process();
 
-                    //"/c cd /d " + "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer" + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\""
+                   
                     vpak.StartInfo.FileName = "CMD.exe";
-                    //vpak.StartInfo.Arguments = "/c cd /d " + vpk_path + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
 
-                    vpak.StartInfo.Arguments = "/c cd /d " + tempvpk_path + "\\bin && start \"\" vpk.exe \"" + "-v " +"\"";
+                    string quote = "\"";
+                    vpak.StartInfo.Arguments = @"/c "+ "cd /d " +  quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + quote + cwd + quote  + textBoxExtraParams.Text;
                     vpak.Start();
+
+                    
                 }
                
 
@@ -103,7 +105,7 @@ namespace Vpacker
 
             textBoxCNBounds.ReadOnly = true;
             textBoxCSize.ReadOnly = true;
-            checkBoxMultichunk.Enabled = false;
+            //checkBoxMultichunk.Enabled = false;
             FindSteam();
             FindSteamDirectories();
             
