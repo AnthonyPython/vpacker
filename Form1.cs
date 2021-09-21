@@ -26,6 +26,10 @@ namespace Vpacker
         // which vpk.exe to use. do not use \!
         public string vpk_path = "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
+        public int m_iCSize = 200;
+
+        public int m_iCnbytebounds = 1;
+
         public Form1()
         {
             InitializeComponent();
@@ -40,27 +44,49 @@ namespace Vpacker
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (File.Exists(vpk_path + "\\bin\\vpk.exe"))
+            string tempvpk_path = vpk_path; //textBoxGameDirectory.Text;
+
+            bool bMultiC = checkBoxMultichunk.Checked;
+            int tempCsize = m_iCSize;
+            int tempCnBound = m_iCnbytebounds;
+            if (File.Exists(tempvpk_path + "\\bin\\vpk.exe"))
             {
                 /*Process vpak = new Process();
                 vpak.StartInfo.FileName = "CMD.exe";
                 vpak.StartInfo.Arguments = "/c cd /d " + "D:\\SteamLibrary\\" + "\\steamapps\\common\\" + "Team Fortress 2" + "\\bin && start \"\" hlmv.exe -game \"" + "D:\\SteamLibrary\\" + "\\steamapps\\common\\" + "Team Fortress 2" + "\\" + "tf" + "\"";
                 vpak.Start();*/
-                createfile();
-                //vpk_path
-                string fileName = cwd + "\\test.txt";
-                Process vpak = new Process();
 
-                //"/c cd /d " + "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer" + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\""
-                vpak.StartInfo.FileName = vpk_path + "\\bin\\vpk.exe";
-                //vpak.StartInfo.Arguments = "/c cd /d " + vpk_path + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
 
-                vpak.StartInfo.Arguments = "-M " + "a " + "pak01 " + "@" + fileName + "\"";
-                vpak.Start();
-                if (File.Exists(fileName) && vpak.HasExited)
+                if (bMultiC)
                 {
-                    File.Delete(fileName);
+                    createfile();
+                    //vpk_path
+                    string fileName = cwd + "\\test.txt";
+                    Process vpak = new Process();
+
+                    //"/c cd /d " + "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer" + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\""
+                    vpak.StartInfo.FileName = tempvpk_path + "\\bin\\vpk.exe";
+                    //vpak.StartInfo.Arguments = "/c cd /d " + vpk_path + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
+
+                    vpak.StartInfo.Arguments = "-v " + textBoxExtraParams.Text /*+ "-c " + tempCsize.ToString() + "-a " + tempCnBound.ToString() */+ "-M " + "a " + "pak01 " + "@" + fileName + "\"";
+                    vpak.Start();
+                    if (File.Exists(fileName) && vpak.HasExited)
+                    {
+                        File.Delete(fileName);
+                    }
                 }
+                else 
+                {
+                    Process vpak = new Process();
+
+                    //"/c cd /d " + "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer" + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\""
+                    vpak.StartInfo.FileName = "CMD.exe";
+                    //vpak.StartInfo.Arguments = "/c cd /d " + vpk_path + "\\bin && start \"\" vpk.exe \"" +"vpk "+  cwd + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
+
+                    vpak.StartInfo.Arguments = "/c cd /d " + tempvpk_path + "\\bin && start \"\" vpk.exe \"" + "-v " +"\"";
+                    vpak.Start();
+                }
+               
 
             }
         }
@@ -68,6 +94,16 @@ namespace Vpacker
         private void Form1_Load(object sender, EventArgs e)
         {
             steam.AdditionalSteamDirectories = new List<string>();
+            textBoxGameDirectory.Text = vpk_path;
+
+            textBoxCNBounds.Text = m_iCnbytebounds.ToString();
+            textBoxCSize.Text = m_iCSize.ToString();
+
+            versionlabel.Text = "Version: " + version;
+
+            textBoxCNBounds.ReadOnly = true;
+            textBoxCSize.ReadOnly = true;
+            checkBoxMultichunk.Enabled = false;
             FindSteam();
             FindSteamDirectories();
             
@@ -190,6 +226,7 @@ namespace Vpacker
                 // Create a new file     
                 using (FileStream fs = File.Create(fileName))
                 {
+                    StringBuilder sb = new StringBuilder();
                     // Add some text to file
                     foreach (var user_folder in target_folders)
                     {
@@ -202,29 +239,44 @@ namespace Vpacker
 #if true
                             if (extension != null && file_types.Contains(temp[1].ToString()))
                             {
+                                sb.Append("Found: ");
+                                sb.AppendLine(f);
 
+                                sb.AppendLine("\n");
                                 //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
                                 Byte[] title = new UTF8Encoding(true).GetBytes( f + "\n");
                                 //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
                                 fs.Write(title, 0, title.Length);
+                                sb.Append("Writing to file.");
+                                //sb.AppendLine(f);
+
+                                sb.AppendLine("\n");
                             } 
 #endif
                         }
 
                     }
-                    
-                   
-                }
 
+                   
+
+                   
+                    richTextBoxLog.Text = sb.ToString();
+
+
+                }
+                richTextBoxLog.Clear();
+                StringBuilder sb2 = new StringBuilder();
                 // Open the stream and read it back.    
-                /*using (StreamReader sr = File.OpenText(fileName))
+                using (StreamReader sr = File.OpenText(fileName))
                 {
                     string s = "";
                     while ((s = sr.ReadLine()) != null)
                     {
-                        Console.WriteLine(s);
+                        sb2.Append(s + '\n');
                     }
-                }*/
+
+                    richTextBoxLog.Text = sb2.ToString();
+                }
             }
             catch (Exception Ex)
             {
@@ -232,50 +284,29 @@ namespace Vpacker
             }
         }
 
-
-        /*public  ArrayList DirSearch(string sDir)
+        private void BrowseGameDirectory_Click(object sender, EventArgs e)
         {
-            try
+            DialogResult result = folderBrowserDialogGame.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                foreach (string d in Directory.GetDirectories(sDir))
-                {
-                    if (d == target_folders.Where(f => extensions.IndexOf(Path.GetExtension(d)) >= 0).ToArray())
-                    { 
-                    }
-                    foreach (string f in Directory.GetFiles(d, "*.xml", SearchOption.AllDirectories))
-                    {
-                        string extension = Path.GetExtension(f);
-                        if (extension != null && (extension.Equals(".xml")))
-                        {
-                            fileList.Add(f);
-                        }
-                    }
-                    DirSearch(d);
-                }
+                textBoxGameDirectory.Text = folderBrowserDialogGame.SelectedPath;
+                vpk_path = folderBrowserDialogGame.SelectedPath;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return fileList;
-        }*/
-    
+        }
 
-        //Python code for reference only
-#if false
-response_path = join(os.getcwd(),"vpk_list.txt")
+        private void textBoxGameDirectory_TextChanged(object sender, EventArgs e)
+        {
+            vpk_path = textBoxGameDirectory.Text;
+        }
 
-out = open(response_path,'w')
-len_cd = len(os.getcwd()) + 1
+        private void textBoxCSize_TextChanged(object sender, EventArgs e)
+        {
+            m_iCSize = Int16.Parse(textBoxCSize.Text);
+        }
 
-for user_folder in target_folders:
-	for root, dirs, files in os.walk(join(os.getcwd(),user_folder)):
-		for file in files:
-			if len(file_types) and file.rsplit(".")[-1] in file_types:
-				out.write(os.path.join(root[len_cd:].replace("/","\\"),file) + "\n")
-
-out.close()
-#endif
-
+        private void textBoxCNBounds_TextChanged(object sender, EventArgs e)
+        {
+            m_iCnbytebounds= Int16.Parse(textBoxCNBounds.Text);
+        }
     }
 }
