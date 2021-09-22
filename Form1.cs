@@ -24,7 +24,7 @@ namespace Vpacker
         // What files to look for, in the aforementioned folders.
         public List<string> file_types = new List<string> { "vcs", "mp3", "wav", "rc", "scr", "vmt", "vtf", "mdl", "phy", "vtx", "vvd", "ani", "pcf", "vcd", "txt", "res", "vfont", "cur", "dat", "bik", "mov", "bsp", "nav", "lst", "lmp", "vfe", "ttf" };
         // which vpk.exe to use.
-        public string vpk_path = "D:\\SteamLibrary\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
+        public string vpk_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
         public int m_iCSize = 200;
 
@@ -92,7 +92,35 @@ namespace Vpacker
 
             }
         }
+        private void FindAddDirectories()
+        {
+            if (File.Exists(steam.MainSteamDir + "/steamapps/libraryfolders.vdf"))
+            {
+                string[] lines = File.ReadAllLines(steam.MainSteamDir + "/steamapps/libraryfolders.vdf");
+                if (lines.Count() != 5)
+                {
+                    //This means we have multiple directories
+                    steam.AdditionalSteamDirectories.Clear();
+                    int numberOfDirectories = lines.Count() - 5;
+                    for (int i = 4; i < lines.Count() - 1; i++)    //start at line 5 and go to closing bracket
+                    {
+                        string temp = lines[i];
+                        int finalPosition = temp.LastIndexOf("\"");
 
+                        if (finalPosition != -1)
+                        {
+                            int startPosition = temp.LastIndexOf("\"", finalPosition - 1) + 1;    //Dont grab the same position or starting quote
+                            temp = temp.Substring(startPosition, (finalPosition - startPosition)).Replace("\\\\", "\\");
+                            if(Directory.Exists(temp))
+                                steam.AdditionalSteamDirectories.Add(temp);
+                        }
+                       
+                    }
+                    //richTextBoxAdditionalSteamDirectory.Lines = steam.AdditionalSteamDirectories.ToArray();
+                }
+            }
+            checkGamesInstalled();
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             steam.AdditionalSteamDirectories = new List<string>();
@@ -119,26 +147,7 @@ namespace Vpacker
 
 
 
-        public List<string> getLibraryFolders()
-        {
-            List<string> stringList = new List<string>();
-
-
-            using (StreamReader streamReader = new StreamReader(steam.MainSteamDir + "\\SteamApps\\libraryfolders.vdf"))
-            {
-                string input;
-                while ((input = streamReader.ReadLine().Trim()) != "}")
-                {
-                    if (new Regex("^\"[0-9]*\"( *\t*)*\".*\"$").IsMatch(input))
-                    {
-                        string path = Regex.Replace(input, "^\"[0-9]*\"( *\t*)*", "").Replace("\"", "").Replace("\\\\", "\\");
-                        if (Directory.Exists(path))
-                            stringList.Add(path);
-                    }
-                }
-            }
-            return stringList;
-        }
+        
 
         private void FindSteamDirectories()
         {
@@ -147,7 +156,8 @@ namespace Vpacker
             if (File.Exists(steam.MainSteamDir + "/steamapps/libraryfolders.vdf"))
             {
                 steam.AdditionalSteamDirectories.Clear();
-                steam.AdditionalSteamDirectories = getLibraryFolders();
+                FindAddDirectories();
+                //steam.AdditionalSteamDirectories = getLibraryFolders();
 
 
             }
