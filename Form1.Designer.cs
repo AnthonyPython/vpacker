@@ -164,7 +164,7 @@ namespace Vpacker
             this.comboBox_Mods.DropDownHeight = 174;
             this.comboBox_Mods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Mods.DropDownWidth = 121;
-            this.comboBox_Mods.Font = new System.Drawing.Font("Roboto Medium", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.comboBox_Mods.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.comboBox_Mods.ForeColor = System.Drawing.Color.White;
             this.comboBox_Mods.FormattingEnabled = true;
             this.comboBox_Mods.IntegralHeight = false;
@@ -216,6 +216,7 @@ namespace Vpacker
             // 
             // textBoxCNBounds
             // 
+            this.textBoxCNBounds.Enabled = false;
             this.textBoxCNBounds.Location = new System.Drawing.Point(215, 229);
             this.textBoxCNBounds.Name = "textBoxCNBounds";
             this.textBoxCNBounds.Size = new System.Drawing.Size(36, 20);
@@ -244,6 +245,7 @@ namespace Vpacker
             // 
             // textBoxCSize
             // 
+            this.textBoxCSize.Enabled = false;
             this.textBoxCSize.Location = new System.Drawing.Point(106, 229);
             this.textBoxCSize.Name = "textBoxCSize";
             this.textBoxCSize.Size = new System.Drawing.Size(33, 20);
