@@ -53,8 +53,13 @@ namespace Vpacker
         public void BatchPackFolders()
         {
             string folderpaths = richTextBox_Folders.Text;
-            string[] foldersArray = folderpaths.Split('\n');
+            List<string> foldersArray = folderpaths.Split('\n').ToList<string>();
+
+            foldersArray.RemoveAll(x => string.IsNullOrEmpty(x));
             
+
+
+
             string gameName = comboBox_VpkGame.GetItemText(comboBox_VpkGame.SelectedItem);
             string directory = listOfSourceGames.First(item => item.ProperName == gameName).Directory;
 
@@ -68,13 +73,20 @@ namespace Vpacker
                     var bMultiC = checkBoxMultichunk.Checked;
                     if (bMultiC)
                     {
+                        createBatchvpkfile(F);
+
+                        var lastslash = F.LastIndexOf("\\");
+                        var vpkname = F.Substring(lastslash +1);
                         Process vpak3 = new Process();
 
 
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
-                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        string temp = "Start " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
+
+                        vpak3.StartInfo.Arguments = @"/c " + " cd /d " + F + " && " + temp;
+                        //vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
                         vpak3.Start();
                     }
                     else 
@@ -96,46 +108,6 @@ namespace Vpacker
                 MessageBox.Show(String.Format("No VPK.exe could be found at {0}\\bin\\vpk.exe", tempvpk_path), "ERROR 001", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-        private void createbatfile()
-        {
-            string gameName = comboBox_VpkGame.GetItemText(comboBox_VpkGame.SelectedItem);
-            string directory = listOfSourceGames.First(item => item.ProperName == gameName).Directory;
-
-            string ModName = comboBox_Mods.GetItemText(comboBox_Mods.SelectedItem);
-            string Moddirectory = listOfSourceMods.First(item => item.ProperName == ModName).Directory;
-
-            string tempvpk_path = (checkBox_manualvpkpath.Checked ? vpk_path : directory);
-            string fileName = Moddirectory + "\\vpklaunch.bat";
-
-            try
-            {
-                // Check if file already exists. If yes, delete it.     
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
-                // Create a new file     
-                using (FileStream fs = File.Create(fileName))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    // Add some text to file
-                    string quote = "\"";
-                    string temp = "Start " + quote + quote + " " + quote + tempvpk_path+ "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote +"\n" +"exit" /*+ "D:\\SteamLibrary\\steamapps\\sourcemods\\pf2"*/;
-                    Byte[] title = new UTF8Encoding(true).GetBytes(temp);
-
-                    fs.Write(title, 0, title.Length);
-                }
-
-
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-            }
-        }
-
 
         public void trytodeletefiles()
         {
@@ -204,11 +176,9 @@ namespace Vpacker
                 
                 string temp = "Start " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                vpak.StartInfo.Arguments = @"/c " /*+ "cd /d " + quote + tempvpk_path + quote + "\\bin &&" +*/ +" cd /d " + Moddirectory + " && " + temp /*"start " + "vpklaunch.bat" /*+ textBoxExtraParams.Text + " - v " + "-M " + "a " + "pak01 " + "@" + fileName*/;
+                vpak.StartInfo.Arguments = @"/c " +" cd /d " + Moddirectory + " && " + temp;
                 
-                //vpak.StartInfo.FileName = tempvpk_path + "\\bin\\vpk.exe";
-                
-                //vpak.StartInfo.Arguments = "-v " + textBoxExtraParams.Text /*+ "-c " + tempCsize.ToString() + "-a " + tempCnBound.ToString() */+ "-M " + "a " + "pak01 " + "@" + fileName ;
+               
                 vpak.Start();
 
 
@@ -224,61 +194,6 @@ namespace Vpacker
 
 
                  }*/
-
-
-                
-                /*while (IsInUse(batfileName))
-                { 
-                
-                }
-                while (IsInUse(fileName))
-                {
-
-                }*/
-
-                /*if (File.Exists(batfileName) )
-                {
-                    File.Delete(batfileName);
-                }*/
-
-                /* bool vpkrunning = false;
-                 do
-                 {
-                     Process[] pname = Process.GetProcessesByName("vpk.exe");
-                     if (pname.Length == 0)
-                     {
-                         if (File.Exists(fileName) )
-                         {
-                             File.Delete(fileName);
-                         }
-
-                         vpkrunning = false;
-                     }
-                     else
-                     {
-                         vpkrunning = true;
-                     }
-                 }
-
-                 while (vpkrunning);*/
-
-
-
-
-                /*else
-                {
-                    Process vpak = new Process();
-
-
-                    vpak.StartInfo.FileName = "CMD.exe";
-
-                    string quote = "\"";
-                    vpak.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + quote + Moddirectory + quote + textBoxExtraParams.Text;
-                    vpak.Start();
-
-
-                }*/
-
 
             }
             else 
@@ -310,7 +225,6 @@ namespace Vpacker
                         }
                        
                     }
-                    //richTextBoxAdditionalSteamDirectory.Lines = steam.AdditionalSteamDirectories.ToArray();
                 }
             }
             CheckGamesInstalled();
@@ -331,10 +245,6 @@ namespace Vpacker
                     
 
                 }
-
-               
-               
-                    //richTextBoxAdditionalSteamDirectory.Lines = steam.AdditionalSteamDirectories.ToArray();
                 
             }
 
@@ -734,7 +644,90 @@ namespace Vpacker
             sb.AppendLine(cwd);
             richTextBox1.Text = sb.ToString();
         }
+        private void createBatchvpkfile(string path)
+        {
+            
+            string fileName = path + "\\vpk_list.txt";
 
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                if (Directory.Exists(path))
+                {
+                    // Create a new file     
+                    using (FileStream fs = File.Create(fileName))
+                    {
+                        StringBuilder sb = new StringBuilder();
+
+                        DirectoryInfo dir = new DirectoryInfo(path);
+
+                        // Add some text to file
+                        foreach (var user_folder in dir.GetDirectories())
+                        {
+                            string tempdir = path + "\\";
+                            foreach (string f in Directory.GetFiles(tempdir, "*.*", SearchOption.AllDirectories))
+                            {
+                                string extension = Path.GetExtension(f);
+
+                                var temp = extension.Split('.');
+
+#if true
+                                if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list"))
+                                {
+                                    var tempf = f.Replace(path + "\\", "");
+                                    sb.Append("Found: ");
+                                    sb.AppendLine(tempf);
+
+                                    sb.AppendLine("\n");
+                                    //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
+                                    Byte[] title = new UTF8Encoding(true).GetBytes(tempf + "\n");
+                                    //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
+                                    fs.Write(title, 0, title.Length);
+                                    sb.Append("Writing to file.");
+                                    //sb.AppendLine(f);
+
+                                    sb.AppendLine("\n");
+                                }
+#endif
+                            }
+
+                        }
+
+
+
+
+                        richTextBoxLog.Text = sb.ToString();
+
+
+                    }
+
+                }
+
+                
+                richTextBoxLog.Clear();
+                StringBuilder sb2 = new StringBuilder();
+                // Open the stream and read it back.    
+                using (StreamReader sr = File.OpenText(fileName))
+                {
+                    string s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        sb2.Append(s + '\n');
+                    }
+
+                    richTextBoxLog.Text = sb2.ToString();
+                }
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        }
         private void createfile()
         {
             string gameName = comboBox_Mods.GetItemText(comboBox_Mods.SelectedItem);
