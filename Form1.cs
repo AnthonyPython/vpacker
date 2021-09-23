@@ -101,6 +101,8 @@ namespace Vpacker
                         string quote = "\"";
                         vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
                         vpak3.Start();
+
+                        waitforprocess(vpak3, "");
                     }
                         
                 }
