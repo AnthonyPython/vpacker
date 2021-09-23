@@ -190,7 +190,7 @@ namespace Vpacker
 
 
                 createfile();
-                createbatfile();
+               // createbatfile();
                 //vpk_path
                 string fileName = Moddirectory + "\\vpk_list.txt";
 
@@ -200,8 +200,11 @@ namespace Vpacker
                 vpak.StartInfo.FileName = "CMD.exe";
                 
                 string quote = "\"";
+
                 
-                vpak.StartInfo.Arguments = @"/c " /*+ "cd /d " + quote + tempvpk_path + quote + "\\bin &&" +*/ +" cd /d " + Moddirectory + " && start " + "vpklaunch.bat" /*+ textBoxExtraParams.Text + " - v " + "-M " + "a " + "pak01 " + "@" + fileName*/;
+                string temp = "Start " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
+
+                vpak.StartInfo.Arguments = @"/c " /*+ "cd /d " + quote + tempvpk_path + quote + "\\bin &&" +*/ +" cd /d " + Moddirectory + " && " + temp /*"start " + "vpklaunch.bat" /*+ textBoxExtraParams.Text + " - v " + "-M " + "a " + "pak01 " + "@" + fileName*/;
                 
                 //vpak.StartInfo.FileName = tempvpk_path + "\\bin\\vpk.exe";
                 
@@ -610,8 +613,7 @@ namespace Vpacker
             {
                 steam.AdditionalSteamDirectories.Clear();
                 FindAddDirectories();
-                //steam.AdditionalSteamDirectories = getLibraryFolders();
-
+                
 
             }
 
@@ -626,16 +628,46 @@ namespace Vpacker
                 {
                     SteamName = item.Name,
                     ProperName = item.Name,
-                    SourceName = "portal2",
+                    SourceName = item.Name,
                     Installed = false,
                     Directory = item.FullName
                 });
             }
             foreach (SourceMod game in listOfSourceMods)
             {
-                if (Directory.Exists(steam.MainSteamDir + "\\steamapps\\common\\" + game.SteamName))
+                if (Directory.Exists(steam.MainSteamDir + "\\steamapps\\sourcemods\\" + game.SteamName))
                 {
-                    game.Directory = steam.MainSteamDir + "\\steamapps\\sourcemods" + game.SteamName;
+
+                    // Open the stream and read it back.    
+                   /* using (StreamReader sr = File.OpenText(steam.MainSteamDir + "\\steamapps\\sourcemods\\" + game.SteamName))
+                    {
+                        
+
+
+                    }*/
+
+                    string[] lines = File.ReadAllLines(steam.MainSteamDir + "\\steamapps\\sourcemods\\" + game.SteamName + "\\gameinfo.txt");
+                    if (lines.Count() != 1)
+                    {
+                        
+                        for (int i = 1; i < lines.Count() - 1; i++)    //start at line 2 and go to closing bracket
+                        {
+                            string temp = lines[i];
+
+                            if (temp.Contains("game") && !temp.Contains("//"))
+                            {
+                               var temp2 = temp.Replace("\"","");
+                                temp2 = temp2.Replace("game", "");
+                                temp2 = temp2.Replace("\t", "");
+                                temp2.Trim();
+                                game.ProperName = temp2;
+                                break;
+                            }
+                                    
+
+                        }
+                    }
+                    //game.Directory = steam.MainSteamDir + "\\steamapps\\sourcemods\\" + game.SteamName;
                     game.Installed = true;
                 }
             }

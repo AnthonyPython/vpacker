@@ -386,7 +386,7 @@ namespace Vpacker
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(603, 345);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Setiings";
+            this.tabPage4.Text = "Settings";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // label8
