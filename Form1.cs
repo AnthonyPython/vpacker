@@ -87,9 +87,6 @@ namespace Vpacker
                         var vpkstarted = vpak3.Start();
 
                         waitforprocess(vpak3, F + "\\vpk_list.txt");
-
-                        if (vpkstarted)
-                            MessageBox.Show(vpak3.Id.ToString());
                     }
                     else 
                     {
