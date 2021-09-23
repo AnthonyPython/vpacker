@@ -28,9 +28,6 @@ namespace Vpacker
         public string vpk_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
 
-        public string tempvpklist = "";
-        public string tempbatfile = "";
-
         public static List<SourceGame> listOfSourceGames = new List<SourceGame>();
         public static List<SourceMod> listOfSourceMods = new List<SourceMod>();
 
@@ -83,11 +80,16 @@ namespace Vpacker
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
-                        string temp = "Start " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
+                        string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
 
                         vpak3.StartInfo.Arguments = @"/c " + " cd /d " + F + " && " + temp;
                         //vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
-                        vpak3.Start();
+                        var vpkstarted = vpak3.Start();
+
+                        waitforprocess(vpak3, F + "\\vpk_list.txt");
+
+                        if (vpkstarted)
+                            MessageBox.Show(vpak3.Id.ToString());
                     }
                     else 
                     {
@@ -97,7 +99,7 @@ namespace Vpacker
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
-                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
                         vpak3.Start();
                     }
                         
@@ -109,34 +111,30 @@ namespace Vpacker
             }
         }
 
-        public void trytodeletefiles()
-        {
-            IsInUse(tempvpklist);
-            IsInUse(tempbatfile);
-        }
 
-        public bool IsInUse(string path)
+        static async Task waitforprocess(Process p, string file)
         {
-            bool IsFree = true;
+            while (!p.HasExited)
+            {
+                
+            }
+
             try
             {
-                //Just opening the file as open/create
-                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                // Check if file exists with its full path    
+                if (File.Exists(file))
                 {
-                    //we can check by using
-                    IsFree = fs.CanRead;
+                    // If file found, delete it    
+                    File.Delete(file);
+                    Console.WriteLine("File deleted.");
                 }
-
+                else Console.WriteLine("File not found");
             }
-            catch (IOException ex)
+            catch (IOException ioExp)
             {
-                IsFree = false;
+                Console.WriteLine(ioExp.Message);
             }
-            return IsFree;
         }
-
-
-       
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -174,26 +172,14 @@ namespace Vpacker
                 string quote = "\"";
 
                 
-                string temp = "Start " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
+                string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
 
                 vpak.StartInfo.Arguments = @"/c " +" cd /d " + Moddirectory + " && " + temp;
                 
                
                 vpak.Start();
+                waitforprocess(vpak, Moddirectory + "\\vpk_list.txt");
 
-
-                tempvpklist = fileName;
-                tempbatfile = batfileName;
-                /* Process[] pname = Process.GetProcessesByName("vpk.exe");
-                 if (pname.Length == 0)
-                 {
-                     if (File.Exists(fileName))
-                     {
-                         File.Delete(fileName);
-                     }
-
-
-                 }*/
 
             }
             else 
