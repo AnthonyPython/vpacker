@@ -757,7 +757,7 @@ namespace Vpacker
                             var temp = extension.Split('.');
                             
 #if true
-                            if (extension != null && file_types.Contains(temp[1].ToString()))
+                            if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list") && file_types.Contains(temp[1].ToString()))
                             {
                                 var tempf = f.Replace(directory + "\\","");
                                 sb.Append("Found: ");
