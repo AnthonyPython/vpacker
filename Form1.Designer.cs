@@ -136,7 +136,6 @@ namespace Vpacker
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.textBoxCSize);
-            this.tabPage1.Controls.Add(this.checkBoxMultichunk);
             this.tabPage1.Controls.Add(this.richTextBoxLog);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -214,7 +213,7 @@ namespace Vpacker
             this.checkBoxMultichunk.AutoSize = true;
             this.checkBoxMultichunk.Checked = true;
             this.checkBoxMultichunk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMultichunk.Location = new System.Drawing.Point(35, 213);
+            this.checkBoxMultichunk.Location = new System.Drawing.Point(502, 323);
             this.checkBoxMultichunk.Name = "checkBoxMultichunk";
             this.checkBoxMultichunk.Size = new System.Drawing.Size(79, 17);
             this.checkBoxMultichunk.TabIndex = 6;
@@ -325,6 +324,7 @@ namespace Vpacker
             this.tabPage3.Controls.Add(this.button_ClearBatchFolders);
             this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Controls.Add(this.richTextBox_Folders);
+            this.tabPage3.Controls.Add(this.checkBoxMultichunk);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(603, 345);
@@ -337,10 +337,10 @@ namespace Vpacker
             // 
             // richTextBox_Folders
             // 
-            this.richTextBox_Folders.Location = new System.Drawing.Point(3, 3);
+            this.richTextBox_Folders.Location = new System.Drawing.Point(98, 58);
             this.richTextBox_Folders.Name = "richTextBox_Folders";
             this.richTextBox_Folders.ReadOnly = true;
-            this.richTextBox_Folders.Size = new System.Drawing.Size(597, 296);
+            this.richTextBox_Folders.Size = new System.Drawing.Size(382, 216);
             this.richTextBox_Folders.TabIndex = 0;
             this.richTextBox_Folders.Text = "";
             // 
@@ -429,6 +429,7 @@ namespace Vpacker
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.ResumeLayout(false);

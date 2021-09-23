@@ -27,6 +27,10 @@ namespace Vpacker
         // which vpk.exe to use.
         public string vpk_path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Source SDK Base 2013 Multiplayer";
 
+
+        public string tempvpklist = "";
+        public string tempbatfile = "";
+
         public static List<SourceGame> listOfSourceGames = new List<SourceGame>();
         public static List<SourceMod> listOfSourceMods = new List<SourceMod>();
 
@@ -61,14 +65,30 @@ namespace Vpacker
             {
                 foreach (var F in foldersArray)
                 {
-                    Process vpak3 = new Process();
+                    var bMultiC = checkBoxMultichunk.Checked;
+                    if (bMultiC)
+                    {
+                        Process vpak3 = new Process();
 
 
-                    vpak3.StartInfo.FileName = "CMD.exe";
+                        vpak3.StartInfo.FileName = "CMD.exe";
 
-                    string quote = "\"";
-                    vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + quote + F + quote + textBoxExtraParams.Text;
-                    vpak3.Start();
+                        string quote = "\"";
+                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.Start();
+                    }
+                    else 
+                    {
+                        Process vpak3 = new Process();
+
+
+                        vpak3.StartInfo.FileName = "CMD.exe";
+
+                        string quote = "\"";
+                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.Start();
+                    }
+                        
                 }
             }
             else
@@ -77,6 +97,74 @@ namespace Vpacker
             }
         }
 
+        private void createbatfile()
+        {
+            string gameName = comboBox_VpkGame.GetItemText(comboBox_VpkGame.SelectedItem);
+            string directory = listOfSourceGames.First(item => item.ProperName == gameName).Directory;
+
+            string ModName = comboBox_Mods.GetItemText(comboBox_Mods.SelectedItem);
+            string Moddirectory = listOfSourceMods.First(item => item.ProperName == ModName).Directory;
+
+            string tempvpk_path = (checkBox_manualvpkpath.Checked ? vpk_path : directory);
+            string fileName = Moddirectory + "\\vpklaunch.bat";
+
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                // Create a new file     
+                using (FileStream fs = File.Create(fileName))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    // Add some text to file
+                    string quote = "\"";
+                    string temp = "Start " + quote + quote + " " + quote + tempvpk_path+ "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote +"\n" +"exit" /*+ "D:\\SteamLibrary\\steamapps\\sourcemods\\pf2"*/;
+                    Byte[] title = new UTF8Encoding(true).GetBytes(temp);
+
+                    fs.Write(title, 0, title.Length);
+                }
+
+
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        }
+
+
+        public void trytodeletefiles()
+        {
+            IsInUse(tempvpklist);
+            IsInUse(tempbatfile);
+        }
+
+        public bool IsInUse(string path)
+        {
+            bool IsFree = true;
+            try
+            {
+                //Just opening the file as open/create
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    //we can check by using
+                    IsFree = fs.CanRead;
+                }
+
+            }
+            catch (IOException ex)
+            {
+                IsFree = false;
+            }
+            return IsFree;
+        }
+
+
+       
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -101,29 +189,80 @@ namespace Vpacker
                 vpak.Start();*/
 
 
-                if (bMultiC)
-                {
-                    createfile();
-                    //vpk_path
-                    string fileName = Moddirectory + "\\vpk_list.txt";
-                    Process vpak = new Process();
+                createfile();
+                createbatfile();
+                //vpk_path
+                string fileName = Moddirectory + "\\vpk_list.txt";
+
+                string batfileName = Moddirectory + "\\vpklaunch.bat";
+                Process vpak = new Process();
+                
+                vpak.StartInfo.FileName = "CMD.exe";
+                
+                string quote = "\"";
+                
+                vpak.StartInfo.Arguments = @"/c " /*+ "cd /d " + quote + tempvpk_path + quote + "\\bin &&" +*/ +" cd /d " + Moddirectory + " && start " + "vpklaunch.bat" /*+ textBoxExtraParams.Text + " - v " + "-M " + "a " + "pak01 " + "@" + fileName*/;
+                
+                //vpak.StartInfo.FileName = tempvpk_path + "\\bin\\vpk.exe";
+                
+                //vpak.StartInfo.Arguments = "-v " + textBoxExtraParams.Text /*+ "-c " + tempCsize.ToString() + "-a " + tempCnBound.ToString() */+ "-M " + "a " + "pak01 " + "@" + fileName ;
+                vpak.Start();
 
 
-                    //vpak.StartInfo.FileName = "CMD.exe";
+                tempvpklist = fileName;
+                tempbatfile = batfileName;
+                /* Process[] pname = Process.GetProcessesByName("vpk.exe");
+                 if (pname.Length == 0)
+                 {
+                     if (File.Exists(fileName))
+                     {
+                         File.Delete(fileName);
+                     }
 
-                    string quote = "\"";
-                    //vpak.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " /*+ quote + Moddirectory + quote*/ + "-v " + textBoxExtraParams.Text + "-M " + "a " + "pak01 " + "@" + fileName + "\"";
-                    vpak.StartInfo.FileName = tempvpk_path + "\\bin\\vpk.exe";
+
+                 }*/
 
 
-                    vpak.StartInfo.Arguments = Moddirectory + "-v " + textBoxExtraParams.Text /*+ "-c " + tempCsize.ToString() + "-a " + tempCnBound.ToString() */+ "-M " + "a " + "pak01 " + "@" + fileName + "\"";
-                    vpak.Start();
-                    if (File.Exists(fileName) && vpak.HasExited)
-                    {
-                        File.Delete(fileName);
-                    }
+                
+                /*while (IsInUse(batfileName))
+                { 
+                
                 }
-                else
+                while (IsInUse(fileName))
+                {
+
+                }*/
+
+                /*if (File.Exists(batfileName) )
+                {
+                    File.Delete(batfileName);
+                }*/
+
+                /* bool vpkrunning = false;
+                 do
+                 {
+                     Process[] pname = Process.GetProcessesByName("vpk.exe");
+                     if (pname.Length == 0)
+                     {
+                         if (File.Exists(fileName) )
+                         {
+                             File.Delete(fileName);
+                         }
+
+                         vpkrunning = false;
+                     }
+                     else
+                     {
+                         vpkrunning = true;
+                     }
+                 }
+
+                 while (vpkrunning);*/
+
+
+
+
+                /*else
                 {
                     Process vpak = new Process();
 
@@ -135,7 +274,7 @@ namespace Vpacker
                     vpak.Start();
 
 
-                }
+                }*/
 
 
             }
