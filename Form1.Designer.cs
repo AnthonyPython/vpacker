@@ -38,6 +38,8 @@ namespace Vpacker
             this.folderBrowserDialogGame = new System.Windows.Forms.FolderBrowserDialog();
             this.tabVpack = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBox_Mods = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxExtraParams = new System.Windows.Forms.TextBox();
@@ -45,31 +47,29 @@ namespace Vpacker
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxCSize = new System.Windows.Forms.TextBox();
-            this.checkBoxMultichunk = new System.Windows.Forms.CheckBox();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button_ClearBatchFolders = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.richTextBox_Folders = new System.Windows.Forms.RichTextBox();
+            this.checkBoxMultichunk = new System.Windows.Forms.CheckBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBox_manualvpkpath = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.versionlabel = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.comboBox_Mods = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.button_Refresh = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.richTextBox_Folders = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button_ClearBatchFolders = new System.Windows.Forms.Button();
             this.comboBox_VpkGame = new System.Windows.Forms.ComboBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label8 = new System.Windows.Forms.Label();
-            this.checkBox_manualvpkpath = new System.Windows.Forms.CheckBox();
             this.tabVpack.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -146,6 +146,26 @@ namespace Vpacker
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(126, 69);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(51, 25);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Mod";
+            // 
+            // comboBox_Mods
+            // 
+            this.comboBox_Mods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Mods.FormattingEnabled = true;
+            this.comboBox_Mods.Location = new System.Drawing.Point(183, 69);
+            this.comboBox_Mods.Name = "comboBox_Mods";
+            this.comboBox_Mods.Size = new System.Drawing.Size(282, 21);
+            this.comboBox_Mods.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.comboBox_Mods, "Choose a mod to pack files for.");
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -208,6 +228,62 @@ namespace Vpacker
             this.textBoxCSize.TabIndex = 7;
             this.textBoxCSize.TextChanged += new System.EventHandler(this.textBoxCSize_TextChanged);
             // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Location = new System.Drawing.Point(20, 268);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(571, 77);
+            this.richTextBoxLog.TabIndex = 5;
+            this.richTextBoxLog.Text = "";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.AllowDrop = true;
+            this.tabPage3.Controls.Add(this.button_ClearBatchFolders);
+            this.tabPage3.Controls.Add(this.button2);
+            this.tabPage3.Controls.Add(this.richTextBox_Folders);
+            this.tabPage3.Controls.Add(this.checkBoxMultichunk);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(603, 345);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Batch";
+            this.tabPage3.ToolTipText = "pack single or multiple folders ";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPage3.DragDrop += new System.Windows.Forms.DragEventHandler(this.tabPage3_DragDrop);
+            this.tabPage3.DragEnter += new System.Windows.Forms.DragEventHandler(this.tabPage3_DragEnter);
+            // 
+            // button_ClearBatchFolders
+            // 
+            this.button_ClearBatchFolders.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_ClearBatchFolders.Location = new System.Drawing.Point(153, 305);
+            this.button_ClearBatchFolders.Name = "button_ClearBatchFolders";
+            this.button_ClearBatchFolders.Size = new System.Drawing.Size(119, 42);
+            this.button_ClearBatchFolders.TabIndex = 2;
+            this.button_ClearBatchFolders.Text = "Clear";
+            this.button_ClearBatchFolders.UseVisualStyleBackColor = true;
+            this.button_ClearBatchFolders.Click += new System.EventHandler(this.button_ClearBatchFolders_Click);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(328, 305);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(119, 42);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Process";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // richTextBox_Folders
+            // 
+            this.richTextBox_Folders.Location = new System.Drawing.Point(98, 58);
+            this.richTextBox_Folders.Name = "richTextBox_Folders";
+            this.richTextBox_Folders.ReadOnly = true;
+            this.richTextBox_Folders.Size = new System.Drawing.Size(382, 216);
+            this.richTextBox_Folders.TabIndex = 0;
+            this.richTextBox_Folders.Text = "";
+            // 
             // checkBoxMultichunk
             // 
             this.checkBoxMultichunk.AutoSize = true;
@@ -219,16 +295,43 @@ namespace Vpacker
             this.checkBoxMultichunk.TabIndex = 6;
             this.checkBoxMultichunk.Text = "MultiChunk";
             this.toolTip1.SetToolTip(this.checkBoxMultichunk, "When Enabled creates multichunk vpk\'s like for a source mod.\r\nWhen off it behaves" +
-        " as if you dragged the current folder onto vpk.exe.");
+        " as if you dragged the current folder onto vpk.exe.\r\nDo not turn off for very la" +
+        "rge folders. it will fail.");
             this.checkBoxMultichunk.UseVisualStyleBackColor = true;
             // 
-            // richTextBoxLog
+            // tabPage4
             // 
-            this.richTextBoxLog.Location = new System.Drawing.Point(20, 268);
-            this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(571, 77);
-            this.richTextBoxLog.TabIndex = 5;
-            this.richTextBoxLog.Text = "";
+            this.tabPage4.Controls.Add(this.checkBox_manualvpkpath);
+            this.tabPage4.Controls.Add(this.label8);
+            this.tabPage4.Controls.Add(this.textBoxGameDirectory);
+            this.tabPage4.Controls.Add(this.BrowseGameDirectory);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(603, 345);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Settings";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_manualvpkpath
+            // 
+            this.checkBox_manualvpkpath.AutoSize = true;
+            this.checkBox_manualvpkpath.Location = new System.Drawing.Point(21, 8);
+            this.checkBox_manualvpkpath.Name = "checkBox_manualvpkpath";
+            this.checkBox_manualvpkpath.Size = new System.Drawing.Size(107, 17);
+            this.checkBox_manualvpkpath.TabIndex = 17;
+            this.checkBox_manualvpkpath.Text = "Use vpk override";
+            this.checkBox_manualvpkpath.UseVisualStyleBackColor = true;
+            this.checkBox_manualvpkpath.CheckedChanged += new System.EventHandler(this.checkBox_manualvpkpath_CheckedChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(6, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(133, 25);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "VPK Override";
             // 
             // tabPage2
             // 
@@ -286,26 +389,6 @@ namespace Vpacker
             // 
             this.toolTip1.IsBalloon = true;
             // 
-            // comboBox_Mods
-            // 
-            this.comboBox_Mods.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_Mods.FormattingEnabled = true;
-            this.comboBox_Mods.Location = new System.Drawing.Point(183, 69);
-            this.comboBox_Mods.Name = "comboBox_Mods";
-            this.comboBox_Mods.Size = new System.Drawing.Size(282, 21);
-            this.comboBox_Mods.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.comboBox_Mods, "Choose a mod to pack files for.");
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(126, 69);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 25);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "Mod";
-            // 
             // button_Refresh
             // 
             this.button_Refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -318,54 +401,6 @@ namespace Vpacker
             this.button_Refresh.UseVisualStyleBackColor = true;
             this.button_Refresh.Click += new System.EventHandler(this.button_Refresh_Click);
             // 
-            // tabPage3
-            // 
-            this.tabPage3.AllowDrop = true;
-            this.tabPage3.Controls.Add(this.button_ClearBatchFolders);
-            this.tabPage3.Controls.Add(this.button2);
-            this.tabPage3.Controls.Add(this.richTextBox_Folders);
-            this.tabPage3.Controls.Add(this.checkBoxMultichunk);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(603, 345);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Batch";
-            this.tabPage3.ToolTipText = "pack single or multiple folders ";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.DragDrop += new System.Windows.Forms.DragEventHandler(this.tabPage3_DragDrop);
-            this.tabPage3.DragEnter += new System.Windows.Forms.DragEventHandler(this.tabPage3_DragEnter);
-            // 
-            // richTextBox_Folders
-            // 
-            this.richTextBox_Folders.Location = new System.Drawing.Point(98, 58);
-            this.richTextBox_Folders.Name = "richTextBox_Folders";
-            this.richTextBox_Folders.ReadOnly = true;
-            this.richTextBox_Folders.Size = new System.Drawing.Size(382, 216);
-            this.richTextBox_Folders.TabIndex = 0;
-            this.richTextBox_Folders.Text = "";
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(328, 305);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(119, 42);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Process";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button_ClearBatchFolders
-            // 
-            this.button_ClearBatchFolders.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ClearBatchFolders.Location = new System.Drawing.Point(153, 305);
-            this.button_ClearBatchFolders.Name = "button_ClearBatchFolders";
-            this.button_ClearBatchFolders.Size = new System.Drawing.Size(119, 42);
-            this.button_ClearBatchFolders.TabIndex = 2;
-            this.button_ClearBatchFolders.Text = "Clear";
-            this.button_ClearBatchFolders.UseVisualStyleBackColor = true;
-            this.button_ClearBatchFolders.Click += new System.EventHandler(this.button_ClearBatchFolders_Click);
-            // 
             // comboBox_VpkGame
             // 
             this.comboBox_VpkGame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -375,40 +410,6 @@ namespace Vpacker
             this.comboBox_VpkGame.Size = new System.Drawing.Size(282, 21);
             this.comboBox_VpkGame.TabIndex = 17;
             this.toolTip1.SetToolTip(this.comboBox_VpkGame, "Source Game to use for vpk.exe");
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.checkBox_manualvpkpath);
-            this.tabPage4.Controls.Add(this.label8);
-            this.tabPage4.Controls.Add(this.textBoxGameDirectory);
-            this.tabPage4.Controls.Add(this.BrowseGameDirectory);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(603, 345);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Settings";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 28);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(133, 25);
-            this.label8.TabIndex = 16;
-            this.label8.Text = "VPK Override";
-            // 
-            // checkBox_manualvpkpath
-            // 
-            this.checkBox_manualvpkpath.AutoSize = true;
-            this.checkBox_manualvpkpath.Location = new System.Drawing.Point(21, 8);
-            this.checkBox_manualvpkpath.Name = "checkBox_manualvpkpath";
-            this.checkBox_manualvpkpath.Size = new System.Drawing.Size(107, 17);
-            this.checkBox_manualvpkpath.TabIndex = 17;
-            this.checkBox_manualvpkpath.Text = "Use vpk override";
-            this.checkBox_manualvpkpath.UseVisualStyleBackColor = true;
-            this.checkBox_manualvpkpath.CheckedChanged += new System.EventHandler(this.checkBox_manualvpkpath_CheckedChanged);
             // 
             // Form1
             // 
@@ -425,13 +426,13 @@ namespace Vpacker
             this.tabVpack.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

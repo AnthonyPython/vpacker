@@ -114,8 +114,54 @@ namespace Vpacker
         }
 
 
-        static async Task waitforprocess(Process p, string file)
+        public void EnableAllFeatures()
         {
+            textBoxExtraParams.Enabled = true;
+            button1.Enabled = true;
+            comboBox_Mods.Enabled = true;
+            textBoxGameDirectory.Enabled = true;
+            BrowseGameDirectory.Enabled = true;
+            checkBox_manualvpkpath.Enabled = true;
+            tabPage3.AllowDrop = true;
+            button_Refresh.Enabled = true;
+            comboBox_VpkGame.Enabled = true;
+            button_ClearBatchFolders.Enabled = true;
+            button2.Enabled = true;
+            checkBoxMultichunk.Enabled = true;
+
+            if (checkBox_manualvpkpath.Checked)
+            {
+                textBoxGameDirectory.Enabled = true;
+                BrowseGameDirectory.Enabled = true;
+                comboBox_VpkGame.Enabled = false;
+            }
+            else
+            {
+                textBoxGameDirectory.Enabled = false;
+                BrowseGameDirectory.Enabled = false;
+                comboBox_VpkGame.Enabled = true;
+            }
+        }
+        public void DisableAllFeatures()
+        {
+            textBoxExtraParams.Enabled = false;
+            button1.Enabled = false;
+            comboBox_Mods.Enabled = false;
+            textBoxGameDirectory.Enabled = false;
+            BrowseGameDirectory.Enabled = false;
+            checkBox_manualvpkpath.Enabled = false;
+            tabPage3.AllowDrop = false;
+            button_Refresh.Enabled = false;
+            comboBox_VpkGame.Enabled = false;
+            button_ClearBatchFolders.Enabled = false;
+            button2.Enabled = false;
+            checkBoxMultichunk.Enabled = false;
+        }
+        async Task waitforprocess(Process p, string file)
+        {
+            DisableAllFeatures();
+
+
             while (!p.HasExited)
             {
                 
@@ -136,6 +182,8 @@ namespace Vpacker
             {
                 Console.WriteLine(ioExp.Message);
             }
+
+            EnableAllFeatures();
         }
 
         private void button1_Click(object sender, EventArgs e)
