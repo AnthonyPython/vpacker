@@ -95,7 +95,7 @@ namespace Vpacker
                         string quote = "\"";
                         string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + "in " + F + " && "+ " cd /d " + F + " && " + temp;
+                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + F + " && "+ " cd /d " + F + " && " + temp;
                         //vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
                         listofprocess.Add(new ProcessCount
                         {
@@ -117,7 +117,14 @@ namespace Vpacker
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
-                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + F + " && " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+
+                        listofprocess.Add(new ProcessCount
+                        {
+                            p = vpak3,
+                            Done = false
+                        });
+
                         vpak3.Start();
 
                         Waitforprocess(vpak3, "");
@@ -250,7 +257,7 @@ namespace Vpacker
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
              
 
@@ -265,6 +272,7 @@ namespace Vpacker
             string Moddirectory = listOfSourceMods.First(item => item.ProperName == ModName).Directory;
 
             string tempvpk_path = (checkBox_manualvpkpath.Checked ? vpk_path : directory);
+            List<ProcessCount> listofprocess = new List<ProcessCount>();
             if (File.Exists(tempvpk_path + "\\bin\\vpk.exe"))
             {
                 /*Process vpak = new Process();
@@ -278,7 +286,7 @@ namespace Vpacker
                 //vpk_path
                 string fileName = Moddirectory + "\\vpk_list.txt";
 
-                string batfileName = Moddirectory + "\\vpklaunch.bat";
+                
                 Process vpak = new Process();
                 
                 vpak.StartInfo.FileName = "CMD.exe";
@@ -288,9 +296,13 @@ namespace Vpacker
                 
                 string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                vpak.StartInfo.Arguments = @"/c " +" cd /d " + Moddirectory + " && " + temp;
-                
-               
+                vpak.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + Moddirectory + " && " + " cd /d " + Moddirectory + " && " + temp;
+
+                listofprocess.Add(new ProcessCount
+                {
+                    p = vpak,
+                    Done = false
+                });
                 vpak.Start();
                 Waitforprocess(vpak, Moddirectory + "\\vpk_list.txt");
 
@@ -300,6 +312,14 @@ namespace Vpacker
             {
                 MessageBox.Show(String.Format("No VPK.exe could be found at {0}\\bin\\vpk.exe", tempvpk_path), "ERROR 001", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            await WaitforAllDone(listofprocess);
+
+            MessageBox.Show("All VPK's created! Done!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Thread enableThread =
+                        new Thread(new ThreadStart(this.EnableAllFeatures));
+            enableThread.Start();
         }
         private void FindAddDirectories()
         {
