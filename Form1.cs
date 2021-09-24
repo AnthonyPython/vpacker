@@ -12,11 +12,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vpacker
 {
+    
     public partial class Form1 : MaterialForm
     {
         public string vpk_dir = "";
@@ -57,16 +59,16 @@ namespace Vpacker
         public string cwd = Directory.GetCurrentDirectory().ToString();
 
 
-        public void BatchPackFolders()
+        public async void BatchPackFolders()
         {
             string folderpaths = richTextBox_Folders.Text;
             List<string> foldersArray = folderpaths.Split('\n').ToList<string>();
 
             foldersArray.RemoveAll(x => string.IsNullOrEmpty(x));
-            
 
 
-
+            List<ProcessCount> listofprocess = new List<ProcessCount>();
+            //List<Process> listofprocess = new List<Process>();
             string gameName = comboBox_VpkGame.GetItemText(comboBox_VpkGame.SelectedItem);
             string directory = listOfSourceGames.First(item => item.ProperName == gameName).Directory;
 
@@ -75,28 +77,37 @@ namespace Vpacker
             
             if (File.Exists(tempvpk_path + "\\bin\\vpk.exe"))
             {
+                
                 foreach (var F in foldersArray)
                 {
                     var bMultiC = checkBoxMultichunk.Checked;
                     if (bMultiC)
                     {
-                        createBatchvpkfile(F);
+                        await CreateBatchvpkfile(F);
 
                         var lastslash = F.LastIndexOf("\\");
                         var vpkname = F.Substring(lastslash +1);
                         Process vpak3 = new Process();
-
+                        
 
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
                         string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                        vpak3.StartInfo.Arguments = @"/c " + " cd /d " + F + " && " + temp;
+                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + "in " + F + " && "+ " cd /d " + F + " && " + temp;
                         //vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
-                        var vpkstarted = vpak3.Start();
+                        listofprocess.Add(new ProcessCount
+                        {
+                            p = vpak3,
+                            Done = false
+                        });
+                      
 
-                        waitforprocess(vpak3, F + "\\vpk_list.txt");
+                        var vpkstarted = vpak3.Start();
+                        
+                        
+                        Waitforprocess(vpak3, F + "\\vpk_list.txt");
                     }
                     else 
                     {
@@ -109,88 +120,134 @@ namespace Vpacker
                         vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
                         vpak3.Start();
 
-                        waitforprocess(vpak3, "");
+                        Waitforprocess(vpak3, "");
                     }
-                        
+                    
                 }
+              
+
             }
             else
             {
                 MessageBox.Show(String.Format("No VPK.exe could be found at {0}\\bin\\vpk.exe", tempvpk_path), "ERROR 001", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            await WaitforAllDone(listofprocess);
+
+            MessageBox.Show("All VPK's created! Done!","Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Thread enableThread =
+                        new Thread(new ThreadStart(this.EnableAllFeatures));
+            enableThread.Start();
         }
 
 
         public void EnableAllFeatures()
         {
-            textBoxExtraParams.Enabled = true;
-            button1.Enabled = true;
-            comboBox_Mods.Enabled = true;
-            textBoxGameDirectory.Enabled = true;
-            BrowseGameDirectory.Enabled = true;
-            checkBox_manualvpkpath.Enabled = true;
-            tabPage3.AllowDrop = true;
-            button_Refresh.Enabled = true;
-            comboBox_VpkGame.Enabled = true;
-            button_ClearBatchFolders.Enabled = true;
-            button2.Enabled = true;
-            checkBoxMultichunk.Enabled = true;
+            ThreadHelperClass.SetUIEnabled(this, textBoxExtraParams, true);
+            ThreadHelperClass.SetUIEnabled(this, button1, true);
+            ThreadHelperClass.SetUIEnabled(this, comboBox_Mods, true);
+            
+            
+            ThreadHelperClass.SetUIEnabled(this, checkBox_manualvpkpath, true);
+            ThreadHelperClass.SetUIEnabled(this, button_Refresh, true);
+            ThreadHelperClass.SetUIEnabled(this, tabPage3, true);
+            
+            ThreadHelperClass.SetUIEnabled(this, button_ClearBatchFolders, true);
+            ThreadHelperClass.SetUIEnabled(this, button2, true);
+            ThreadHelperClass.SetUIEnabled(this, checkBoxMultichunk, true);
 
             if (checkBox_manualvpkpath.Checked)
             {
-                textBoxGameDirectory.Enabled = true;
-                BrowseGameDirectory.Enabled = true;
-                comboBox_VpkGame.Enabled = false;
+                ThreadHelperClass.SetUIEnabled(this, textBoxGameDirectory, true);
+                ThreadHelperClass.SetUIEnabled(this, BrowseGameDirectory, true);
+
+                ThreadHelperClass.SetUIEnabled(this, comboBox_VpkGame, false);
             }
             else
             {
-                textBoxGameDirectory.Enabled = false;
-                BrowseGameDirectory.Enabled = false;
-                comboBox_VpkGame.Enabled = true;
+                ThreadHelperClass.SetUIEnabled(this, textBoxGameDirectory, false);
+                ThreadHelperClass.SetUIEnabled(this, BrowseGameDirectory, false);
+
+                ThreadHelperClass.SetUIEnabled(this, comboBox_VpkGame, true);
+                
             }
         }
         public void DisableAllFeatures()
         {
-            textBoxExtraParams.Enabled = false;
-            button1.Enabled = false;
-            comboBox_Mods.Enabled = false;
-            textBoxGameDirectory.Enabled = false;
-            BrowseGameDirectory.Enabled = false;
-            checkBox_manualvpkpath.Enabled = false;
-            tabPage3.AllowDrop = false;
-            button_Refresh.Enabled = false;
-            comboBox_VpkGame.Enabled = false;
-            button_ClearBatchFolders.Enabled = false;
-            button2.Enabled = false;
-            checkBoxMultichunk.Enabled = false;
+
+            ThreadHelperClass.SetUIEnabled(this, textBoxExtraParams, false);
+            ThreadHelperClass.SetUIEnabled(this, button1, false);
+            ThreadHelperClass.SetUIEnabled(this, comboBox_Mods, false);
+            ThreadHelperClass.SetUIEnabled(this, textBoxGameDirectory, false);
+            ThreadHelperClass.SetUIEnabled(this, BrowseGameDirectory, false);
+            ThreadHelperClass.SetUIEnabled(this, checkBox_manualvpkpath, false);
+            ThreadHelperClass.SetUIEnabled(this, button_Refresh, false);
+            ThreadHelperClass.SetUIEnabled(this, tabPage3, false);
+            ThreadHelperClass.SetUIEnabled(this, comboBox_VpkGame, false);
+            ThreadHelperClass.SetUIEnabled(this, button_ClearBatchFolders, false);
+            ThreadHelperClass.SetUIEnabled(this, button2, false);
+            ThreadHelperClass.SetUIEnabled(this, checkBoxMultichunk, false);
+            
         }
-        async Task waitforprocess(Process p, string file)
+
+        public Task WaitforAllDone(List<ProcessCount> p)
         {
-            DisableAllFeatures();
-
-
-            while (!p.HasExited)
+            return Task.Run(() =>
             {
-                
-            }
-
-            try
-            {
-                // Check if file exists with its full path    
-                if (File.Exists(file))
+                int closedprocess = 0;
+                while (closedprocess < p.Count)
                 {
-                    // If file found, delete it    
-                    File.Delete(file);
-                    Console.WriteLine("File deleted.");
+                    foreach (ProcessCount Item in p)
+                    {
+                        if (Item.p.HasExited && !Item.Done)
+                        {
+                            Item.Done = true;
+                            closedprocess++;
+                        }
+                    }
                 }
-                else Console.WriteLine("File not found");
-            }
-            catch (IOException ioExp)
+               
+                
+            });
+        }
+        private Task Waitforprocess(Process p, string file)
+        {
+            //DisableAllFeatures();
+            return Task.Run(() =>
             {
-                Console.WriteLine(ioExp.Message);
-            }
 
-            EnableAllFeatures();
+
+                Thread disableThread =
+                            new Thread(new ThreadStart(this.DisableAllFeatures));
+                disableThread.Start();
+                while (!p.HasExited)
+                {
+
+                }
+
+                try
+                {
+                    // Check if file exists with its full path    
+                    if (File.Exists(file))
+                    {
+                        // If file found, delete it    
+                        File.Delete(file);
+                        Console.WriteLine("File deleted.");
+                    }
+                    else Console.WriteLine("File not found");
+                }
+                catch (IOException ioExp)
+                {
+                    Console.WriteLine(ioExp.Message);
+                }
+
+                
+
+            });
+
+            //EnableAllFeatures();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -235,7 +292,7 @@ namespace Vpacker
                 
                
                 vpak.Start();
-                waitforprocess(vpak, Moddirectory + "\\vpk_list.txt");
+                Waitforprocess(vpak, Moddirectory + "\\vpk_list.txt");
 
 
             }
@@ -687,89 +744,92 @@ namespace Vpacker
             sb.AppendLine(cwd);
             richTextBox1.Text = sb.ToString();
         }
-        private void createBatchvpkfile(string path)
+        private Task CreateBatchvpkfile(string path)
         {
-            
-            string fileName = path + "\\vpk_list.txt";
-
-            try
+            return Task.Run(() =>
             {
-                // Check if file already exists. If yes, delete it.     
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
+                string fileName = path + "\\vpk_list.txt";
 
-                if (Directory.Exists(path))
+                try
                 {
-                    // Create a new file     
-                    using (FileStream fs = File.Create(fileName))
+                    // Check if file already exists. If yes, delete it.     
+                    if (File.Exists(fileName))
                     {
-                        StringBuilder sb = new StringBuilder();
+                        File.Delete(fileName);
+                    }
 
-                        DirectoryInfo dir = new DirectoryInfo(path);
-
-                        // Add some text to file
-                        foreach (var user_folder in dir.GetDirectories())
+                    if (Directory.Exists(path))
+                    {
+                        // Create a new file     
+                        using (FileStream fs = File.Create(fileName))
                         {
-                            string tempdir = path + "\\";
-                            foreach (string f in Directory.GetFiles(tempdir, "*.*", SearchOption.AllDirectories))
-                            {
-                                string extension = Path.GetExtension(f);
+                            StringBuilder sb = new StringBuilder();
 
-                                var temp = extension.Split('.');
+                            DirectoryInfo dir = new DirectoryInfo(path);
+
+                            // Add some text to file
+                            foreach (var user_folder in dir.GetDirectories())
+                            {
+                                string tempdir = path + "\\";
+                                foreach (string f in Directory.GetFiles(tempdir, "*.*", SearchOption.AllDirectories))
+                                {
+                                    string extension = Path.GetExtension(f);
+
+                                    var temp = extension.Split('.');
 
 #if true
-                                if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list"))
-                                {
-                                    var tempf = f.Replace(path + "\\", "");
-                                    sb.Append("Found: ");
-                                    sb.AppendLine(tempf);
+                                    if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list"))
+                                    {
+                                        var tempf = f.Replace(path + "\\", "");
+                                        sb.Append("Found: ");
+                                        sb.AppendLine(tempf);
 
-                                    sb.AppendLine("\n");
-                                    //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
-                                    Byte[] title = new UTF8Encoding(true).GetBytes(tempf + "\n");
-                                    //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
-                                    fs.Write(title, 0, title.Length);
-                                    sb.Append("Writing to file.");
-                                    //sb.AppendLine(f);
+                                        sb.AppendLine("\n");
+                                        //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
+                                        Byte[] title = new UTF8Encoding(true).GetBytes(tempf + "\n");
+                                        //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
+                                        fs.Write(title, 0, title.Length);
+                                        sb.Append("Writing to file.");
+                                        //sb.AppendLine(f);
 
-                                    sb.AppendLine("\n");
-                                }
+                                        sb.AppendLine("\n");
+                                    }
 #endif
+                                }
+
                             }
+
+
+
+
+                            richTextBoxLog.Text = sb.ToString();
+
 
                         }
 
-
-
-
-                        richTextBoxLog.Text = sb.ToString();
-
-
                     }
 
-                }
 
-                
-                richTextBoxLog.Clear();
-                StringBuilder sb2 = new StringBuilder();
-                // Open the stream and read it back.    
-                using (StreamReader sr = File.OpenText(fileName))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
+                    richTextBoxLog.Clear();
+                    StringBuilder sb2 = new StringBuilder();
+                    // Open the stream and read it back.    
+                    using (StreamReader sr = File.OpenText(fileName))
                     {
-                        sb2.Append(s + '\n');
-                    }
+                        string s = "";
+                        while ((s = sr.ReadLine()) != null)
+                        {
+                            sb2.Append(s + '\n');
+                        }
 
-                    richTextBoxLog.Text = sb2.ToString();
+                        richTextBoxLog.Text = sb2.ToString();
+                    }
                 }
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-            }
+                catch (Exception Ex)
+                {
+                    Console.WriteLine(Ex.ToString());
+                }
+            });
+            
         }
         private void createfile()
         {
@@ -930,6 +990,57 @@ namespace Vpacker
                 textBoxGameDirectory.Enabled = false;
                 BrowseGameDirectory.Enabled = false;
                 comboBox_VpkGame.Enabled = true;
+            }
+        }
+    }
+
+    public class ProcessCount
+    {
+        public Process p { get; set; }
+
+        public bool Done { get; set; }
+
+    }
+    public static class ThreadHelperClass
+    {
+        delegate void SetTextCallback(Form f, Control ctrl, string text);
+
+        delegate void SetUIEnableCallback(Form f, Control ctrl, bool enable);
+        /// <summary>
+        /// Set text property of various controls
+        /// </summary>
+        /// <param name="form">The calling form</param>
+        /// <param name="ctrl"></param>
+        /// <param name="text"></param>
+        public static void SetText(Form form, Control ctrl, string text)
+        {
+            // InvokeRequired required compares the thread ID of the 
+            // calling thread to the thread ID of the creating thread. 
+            // If these threads are different, it returns true. 
+            if (ctrl.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                form.Invoke(d, new object[] { form, ctrl, text });
+            }
+            else
+            {
+                ctrl.Text = text;
+            }
+        }
+
+        public static void SetUIEnabled(Form form, Control ctrl, bool enable)
+        {
+            // InvokeRequired required compares the thread ID of the 
+            // calling thread to the thread ID of the creating thread. 
+            // If these threads are different, it returns true. 
+            if (ctrl.InvokeRequired)
+            {
+                SetUIEnableCallback d = new SetUIEnableCallback(SetUIEnabled);
+                form.Invoke(d, new object[] { form, ctrl, enable });
+            }
+            else
+            {
+                ctrl.Enabled = enable;
             }
         }
     }
