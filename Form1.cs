@@ -95,8 +95,20 @@ namespace Vpacker
                         string quote = "\"";
                         string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a " + vpkname  /*"pak01"*/ + " @" + quote + F + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + F + " && "+ " cd /d " + F + " && " + temp;
-                        //vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.StartInfo.Arguments = @"/c " + " cd /d " + F + " && " + temp;
+
+                        vpak3.StartInfo.UseShellExecute = false;
+
+                        vpak3.StartInfo.CreateNoWindow = true;
+
+                        vpak3.StartInfo.LoadUserProfile = true;
+
+                        vpak3.StartInfo.RedirectStandardError = true;
+
+                        vpak3.StartInfo.RedirectStandardInput = true;
+
+                        vpak3.StartInfo.RedirectStandardOutput = true;
+
                         listofprocess.Add(new ProcessCount
                         {
                             p = vpak3,
@@ -117,7 +129,20 @@ namespace Vpacker
                         vpak3.StartInfo.FileName = "CMD.exe";
 
                         string quote = "\"";
-                        vpak3.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + F + " && " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+                        vpak3.StartInfo.Arguments = @"/c " + "cd /d " + quote + tempvpk_path + quote + "\\bin && start " + "/wait " + "vpk.exe " + textBoxExtraParams.Text + quote + F + quote ;
+
+
+                        vpak3.StartInfo.UseShellExecute = false;
+
+                        vpak3.StartInfo.CreateNoWindow = true;
+
+                        vpak3.StartInfo.LoadUserProfile = true;
+
+                        vpak3.StartInfo.RedirectStandardError = true;
+
+                        vpak3.StartInfo.RedirectStandardInput = true;
+
+                        vpak3.StartInfo.RedirectStandardOutput = true;
 
                         listofprocess.Add(new ProcessCount
                         {
@@ -296,7 +321,19 @@ namespace Vpacker
                 
                 string temp = "Start " + "/wait " + quote + quote + " " + quote + tempvpk_path + "\\bin\\vpk.exe" + quote + " -v -M a pak01 @" + quote + Moddirectory + "\\vpk_list.txt" + quote + "\n" + "exit";
 
-                vpak.StartInfo.Arguments = @"/c " + "echo =========DO NOT CLOSE!========" + " && " + "echo Created vpk_list.txt" + " in " + Moddirectory + " && " + " cd /d " + Moddirectory + " && " + temp;
+                vpak.StartInfo.Arguments = @"/c " + "cd /d " + Moddirectory + " && " + temp;
+
+                vpak.StartInfo.UseShellExecute = false;
+
+                vpak.StartInfo.CreateNoWindow = true;
+
+                vpak.StartInfo.LoadUserProfile = true;
+
+                vpak.StartInfo.RedirectStandardError = true;
+
+                vpak.StartInfo.RedirectStandardInput = true;
+
+                vpak.StartInfo.RedirectStandardOutput = true;
 
                 listofprocess.Add(new ProcessCount
                 {
