@@ -910,31 +910,36 @@ namespace Vpacker
                     foreach (var user_folder in target_folders)
                     {
                         string tempdir = directory +"\\" + user_folder;
-                        foreach (string f in Directory.GetFiles(tempdir, "*.*", SearchOption.AllDirectories))
+
+                        if(Directory.Exists(tempdir))
                         {
-                            string extension = Path.GetExtension(f);
-
-                            var temp = extension.Split('.');
-                            
-#if true
-                            if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list") && file_types.Contains(temp[1].ToString()))
+                            foreach (string f in Directory.GetFiles(tempdir, "*.*", SearchOption.AllDirectories))
                             {
-                                var tempf = f.Replace(directory + "\\","");
-                                sb.Append("Found: ");
-                                sb.AppendLine(tempf);
+                                string extension = Path.GetExtension(f);
 
-                                sb.AppendLine("\n");
-                                //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
-                                Byte[] title = new UTF8Encoding(true).GetBytes(tempf + "\n");
-                                //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
-                                fs.Write(title, 0, title.Length);
-                                sb.Append("Writing to file.");
-                                //sb.AppendLine(f);
+                                var temp = extension.Split('.');
 
-                                sb.AppendLine("\n");
-                            } 
+#if true
+                                if (extension != null && !temp[1].ToString().Contains("cache") && !f.Contains("vpk_list") && file_types.Contains(temp[1].ToString()))
+                                {
+                                    var tempf = f.Replace(directory + "\\", "");
+                                    sb.Append("Found: ");
+                                    sb.AppendLine(tempf);
+
+                                    sb.AppendLine("\n");
+                                    //Byte[] title = new UTF8Encoding(true).GetBytes(cwd + "\\" + f + "\n");
+                                    Byte[] title = new UTF8Encoding(true).GetBytes(tempf + "\n");
+                                    //Byte[] title = new UTF8Encoding(true).GetBytes(extension + "\n");
+                                    fs.Write(title, 0, title.Length);
+                                    sb.Append("Writing to file.");
+                                    //sb.AppendLine(f);
+
+                                    sb.AppendLine("\n");
+                                }
 #endif
+                            }
                         }
+                        
 
                     }
 
