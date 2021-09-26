@@ -35,6 +35,8 @@ namespace Vpacker
         public static List<SourceGame> listOfSourceGames = new List<SourceGame>();
         public static List<SourceMod> listOfSourceMods = new List<SourceMod>();
 
+        public List<string> listOfPossibleBadVPKS = new List<string>();
+
         public int m_iCSize = 200;
 
         public int m_iCnbytebounds = 1;
@@ -77,7 +79,7 @@ namespace Vpacker
             
             if (File.Exists(tempvpk_path + "\\bin\\vpk.exe"))
             {
-                
+                listOfPossibleBadVPKS.Clear();
                 foreach (var F in foldersArray)
                 {
                     var bMultiC = checkBoxMultichunk.Checked;
@@ -119,7 +121,9 @@ namespace Vpacker
                         var vpkstarted = vpak3.Start();
                         
                         
-                        Waitforprocess(vpak3, F + "\\vpk_list.txt");
+                        Waitforprocess(vpak3, F + "\\vpk_list.txt", F +"\\" + vpkname + "_000.vpk");
+
+
                     }
                     else 
                     {
@@ -152,7 +156,7 @@ namespace Vpacker
 
                         vpak3.Start();
 
-                        Waitforprocess(vpak3, "");
+                        Waitforprocess(vpak3, "","");
                     }
                     
                 }
@@ -165,6 +169,14 @@ namespace Vpacker
             }
 
             await WaitforAllDone(listofprocess);
+
+            if (listOfPossibleBadVPKS.Count > 0)
+            {
+                Thread changetextThread =
+                       new Thread(new ThreadStart(this.AddBadVPKSToLog));
+                changetextThread.Start();
+                MessageBox.Show("Some vpks might have critical missing vpks.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             MessageBox.Show("All VPK's created! Done!","Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -188,6 +200,8 @@ namespace Vpacker
             ThreadHelperClass.SetUIEnabled(this, button_ClearBatchFolders, true);
             ThreadHelperClass.SetUIEnabled(this, button2, true);
             ThreadHelperClass.SetUIEnabled(this, checkBoxMultichunk, true);
+            ThreadHelperClass.SetUIEnabled(this, tabPage1, true);
+            ThreadHelperClass.SetUIEnabled(this, tabPage3, true);
 
             if (checkBox_manualvpkpath.Checked)
             {
@@ -220,7 +234,9 @@ namespace Vpacker
             ThreadHelperClass.SetUIEnabled(this, button_ClearBatchFolders, false);
             ThreadHelperClass.SetUIEnabled(this, button2, false);
             ThreadHelperClass.SetUIEnabled(this, checkBoxMultichunk, false);
-            
+            ThreadHelperClass.SetUIEnabled(this, tabPage1, false);
+            ThreadHelperClass.SetUIEnabled(this, tabPage3, false);
+
         }
 
         public Task WaitforAllDone(List<ProcessCount> p)
@@ -241,11 +257,12 @@ namespace Vpacker
                 }
                
                 
+                
             });
         }
-        private Task Waitforprocess(Process p, string file)
+        private Task Waitforprocess(Process p, string file, string vpkfilepath)
         {
-            //DisableAllFeatures();
+            
             return Task.Run(() =>
             {
 
@@ -258,6 +275,14 @@ namespace Vpacker
 
                 }
 
+                if (vpkfilepath != "")
+                {
+                    if (!File.Exists(vpkfilepath))
+                    {
+                        listOfPossibleBadVPKS.Add(vpkfilepath);
+                    }
+                }
+               
                 try
                 {
                     // Check if file exists with its full path    
@@ -278,7 +303,7 @@ namespace Vpacker
 
             });
 
-            //EnableAllFeatures();
+            
 
         }
 
@@ -298,6 +323,7 @@ namespace Vpacker
 
             string tempvpk_path = (checkBox_manualvpkpath.Checked ? vpk_path : directory);
             List<ProcessCount> listofprocess = new List<ProcessCount>();
+            listOfPossibleBadVPKS.Clear();
             if (File.Exists(tempvpk_path + "\\bin\\vpk.exe"))
             {
                 /*Process vpak = new Process();
@@ -341,7 +367,7 @@ namespace Vpacker
                     Done = false
                 });
                 vpak.Start();
-                Waitforprocess(vpak, Moddirectory + "\\vpk_list.txt");
+                Waitforprocess(vpak, Moddirectory + "\\vpk_list.txt", Moddirectory + "\\" + "pak01_000.vpk");
 
 
             }
@@ -352,7 +378,23 @@ namespace Vpacker
 
             await WaitforAllDone(listofprocess);
 
+
             MessageBox.Show("All VPK's created! Done!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (listOfPossibleBadVPKS.Count > 0)
+            {
+
+
+                //richTextBoxLog.Text = sb2.ToString();
+
+
+
+                Thread changetextThread =
+                       new Thread(new ThreadStart(this.AddBadVPKSToLog));
+                changetextThread.Start();
+
+                MessageBox.Show("Some vpks might have critical missing vpks.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             Thread enableThread =
                         new Thread(new ThreadStart(this.EnableAllFeatures));
@@ -970,6 +1012,20 @@ namespace Vpacker
             }
         }
 
+
+        public void AddBadVPKSToLog()
+        {
+            StringBuilder sb2 = new StringBuilder();
+
+            string s = "";
+            foreach (var item in listOfPossibleBadVPKS)
+            {
+                sb2.Append(s + "Missing: " + item + " Bad?" + "\n");
+            }
+            sb2.AppendLine("\n");
+
+            ThreadHelperClass.AddText(this, richTextBoxLog, sb2.ToString());
+        }
         private void BrowseGameDirectory_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialogGame.ShowDialog();
@@ -1054,6 +1110,30 @@ namespace Vpacker
                 comboBox_VpkGame.Enabled = true;
             }
         }
+
+        private void tabPage1_DragDrop(object sender, DragEventArgs e)
+        {
+            tabVpack.SelectedTab = tabPage3;
+            for (int i = 0; i < ((string[])e.Data.GetData(DataFormats.FileDrop)).Length; i++)
+            {
+                var path = ((string[])e.Data.GetData(DataFormats.FileDrop))[i];
+                if (Directory.Exists(path))
+                    richTextBox_Folders.Text += path + "\n";
+            }
+        }
+
+        private void tabPage1_DragEnter(object sender, DragEventArgs e)
+        {
+            DragDropEffects effects = DragDropEffects.None;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var path = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+                if (Directory.Exists(path))
+                    effects = DragDropEffects.Copy;
+            }
+
+            e.Effect = effects;
+        }
     }
 
     public class ProcessCount
@@ -1066,6 +1146,8 @@ namespace Vpacker
     public static class ThreadHelperClass
     {
         delegate void SetTextCallback(Form f, Control ctrl, string text);
+
+        delegate void AddTextCallback(Form f, Control ctrl, string text);
 
         delegate void SetUIEnableCallback(Form f, Control ctrl, bool enable);
         /// <summary>
@@ -1087,6 +1169,23 @@ namespace Vpacker
             else
             {
                 ctrl.Text = text;
+            }
+        }
+
+        public static void AddText(Form form, Control ctrl, string text)
+        {
+            
+            // InvokeRequired required compares the thread ID of the 
+            // calling thread to the thread ID of the creating thread. 
+            // If these threads are different, it returns true. 
+            if (ctrl.InvokeRequired)
+            {
+                AddTextCallback d = new AddTextCallback(AddText);
+                form.Invoke(d, new object[] { form, ctrl, text });
+            }
+            else
+            {
+                ctrl.Text += text;
             }
         }
 

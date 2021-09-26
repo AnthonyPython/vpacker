@@ -115,6 +115,7 @@ namespace Vpacker
             // 
             // tabPage1
             // 
+            this.tabPage1.AllowDrop = true;
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.comboBox_Mods);
             this.tabPage1.Controls.Add(this.label7);
@@ -133,6 +134,8 @@ namespace Vpacker
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.DragDrop += new System.Windows.Forms.DragEventHandler(this.tabPage1_DragDrop);
+            this.tabPage1.DragEnter += new System.Windows.Forms.DragEventHandler(this.tabPage1_DragEnter);
             // 
             // button1
             // 
