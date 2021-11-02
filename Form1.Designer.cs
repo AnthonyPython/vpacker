@@ -30,7 +30,6 @@ namespace Vpacker
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.BrowseGameDirectory = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxGameDirectory = new System.Windows.Forms.TextBox();
@@ -57,18 +56,20 @@ namespace Vpacker
             this.checkBox_manualvpkpath = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.versionlabel = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.button_Refresh = new System.Windows.Forms.Button();
             this.comboBox_VpkGame = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabVpack.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -362,6 +363,7 @@ namespace Vpacker
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.pictureBox2);
             this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.label6);
             this.tabPage2.Controls.Add(this.versionlabel);
@@ -373,15 +375,6 @@ namespace Vpacker
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Info";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(9, 163);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(91, 92);
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
             // 
             // label6
             // 
@@ -437,6 +430,24 @@ namespace Vpacker
             this.comboBox_VpkGame.TabIndex = 17;
             this.toolTip1.SetToolTip(this.comboBox_VpkGame, "Source Game to use for vpk.exe");
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Vpacker.Properties.Resources._2a1dcf881660409d387809d193fce61b;
+            this.pictureBox2.Location = new System.Drawing.Point(127, 163);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(91, 92);
+            this.pictureBox2.TabIndex = 6;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Vpacker.Properties.Resources.Henyatsu_small;
+            this.pictureBox1.Location = new System.Drawing.Point(9, 163);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(91, 92);
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -462,6 +473,7 @@ namespace Vpacker
             this.tabPage4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -502,6 +514,7 @@ namespace Vpacker
         private System.Windows.Forms.CheckBox checkBox_manualvpkpath;
         private MaterialSkin.Controls.MaterialComboBox comboBox_Mods;
         private MaterialSkin.Controls.MaterialButton button1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 

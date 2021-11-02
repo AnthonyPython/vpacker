@@ -124,4 +124,7 @@
   <data name="Henyatsu_small1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Henyatsu_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_2a1dcf881660409d387809d193fce61b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\2a1dcf881660409d387809d193fce61b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

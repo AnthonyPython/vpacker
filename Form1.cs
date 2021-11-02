@@ -56,7 +56,7 @@ namespace Vpacker
 
         public static Steam steam = new Steam();
 
-        public static string version = "0.1";
+        public static string version = "1.0";
 
         public string cwd = Directory.GetCurrentDirectory().ToString();
 
@@ -683,6 +683,24 @@ namespace Vpacker
                 Installed = false,
                 Directory = ""
             });
+
+            listOfSourceGames.Add(new SourceGame
+            {
+                SteamName = "Source SDK Base 2013 Multiplayer",
+                ProperName = "Source SDK Base 2013 Multiplayer",
+                SourceName = "hl2mp",
+                Installed = false,
+                Directory = ""
+            });
+
+            listOfSourceGames.Add(new SourceGame
+            {
+                SteamName = "Source SDK Base 2013 Singleplayer",
+                ProperName = "Source SDK Base 2013 Singleplayer",
+                SourceName = "hl2",
+                Installed = false,
+                Directory = ""
+            });
             listOfSourceGames.Add(new SourceGame
             {
                 SteamName = "Team Fortress 2",
@@ -691,6 +709,8 @@ namespace Vpacker
                 Installed = false,
                 Directory = ""
             });
+
+            
 
             textBoxCNBounds.ReadOnly = true;
             textBoxCSize.ReadOnly = true;
