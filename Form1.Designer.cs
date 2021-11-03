@@ -89,7 +89,7 @@ namespace Vpacker
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(11, 464);
+            this.label1.Location = new System.Drawing.Point(15, 459);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 25);
             this.label1.TabIndex = 3;
@@ -97,7 +97,7 @@ namespace Vpacker
             // 
             // textBoxGameDirectory
             // 
-            this.textBoxGameDirectory.Location = new System.Drawing.Point(145, 30);
+            this.textBoxGameDirectory.Location = new System.Drawing.Point(145, 31);
             this.textBoxGameDirectory.Name = "textBoxGameDirectory";
             this.textBoxGameDirectory.Size = new System.Drawing.Size(282, 20);
             this.textBoxGameDirectory.TabIndex = 4;
@@ -186,7 +186,7 @@ namespace Vpacker
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(122, 68);
+            this.label7.Location = new System.Drawing.Point(122, 70);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(51, 25);
             this.label7.TabIndex = 15;
@@ -206,7 +206,7 @@ namespace Vpacker
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(386, 203);
+            this.label4.Location = new System.Drawing.Point(375, 203);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(102, 13);
             this.label4.TabIndex = 12;
@@ -214,7 +214,7 @@ namespace Vpacker
             // 
             // textBoxExtraParams
             // 
-            this.textBoxExtraParams.Location = new System.Drawing.Point(299, 229);
+            this.textBoxExtraParams.Location = new System.Drawing.Point(286, 229);
             this.textBoxExtraParams.Name = "textBoxExtraParams";
             this.textBoxExtraParams.Size = new System.Drawing.Size(280, 20);
             this.textBoxExtraParams.TabIndex = 11;
@@ -222,7 +222,7 @@ namespace Vpacker
             // textBoxCNBounds
             // 
             this.textBoxCNBounds.Enabled = false;
-            this.textBoxCNBounds.Location = new System.Drawing.Point(215, 229);
+            this.textBoxCNBounds.Location = new System.Drawing.Point(160, 229);
             this.textBoxCNBounds.Name = "textBoxCNBounds";
             this.textBoxCNBounds.Size = new System.Drawing.Size(36, 20);
             this.textBoxCNBounds.TabIndex = 10;
@@ -231,7 +231,7 @@ namespace Vpacker
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(180, 203);
+            this.label3.Location = new System.Drawing.Point(124, 203);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 13);
             this.label3.TabIndex = 9;
@@ -241,17 +241,17 @@ namespace Vpacker
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(94, 203);
+            this.label2.Location = new System.Drawing.Point(22, 203);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 8;
-            this.label2.Text = "ChunkSize";
+            this.label2.Text = "Chunk Size";
             this.toolTip1.SetToolTip(this.label2, "How big each vpk is in MB\'s.");
             // 
             // textBoxCSize
             // 
             this.textBoxCSize.Enabled = false;
-            this.textBoxCSize.Location = new System.Drawing.Point(106, 229);
+            this.textBoxCSize.Location = new System.Drawing.Point(36, 229);
             this.textBoxCSize.Name = "textBoxCSize";
             this.textBoxCSize.Size = new System.Drawing.Size(33, 20);
             this.textBoxCSize.TabIndex = 7;
@@ -259,7 +259,7 @@ namespace Vpacker
             // 
             // richTextBoxLog
             // 
-            this.richTextBoxLog.Location = new System.Drawing.Point(38, 255);
+            this.richTextBoxLog.Location = new System.Drawing.Point(25, 256);
             this.richTextBoxLog.Name = "richTextBoxLog";
             this.richTextBoxLog.Size = new System.Drawing.Size(541, 77);
             this.richTextBoxLog.TabIndex = 5;
@@ -285,7 +285,7 @@ namespace Vpacker
             // button_ClearBatchFolders
             // 
             this.button_ClearBatchFolders.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_ClearBatchFolders.Location = new System.Drawing.Point(153, 305);
+            this.button_ClearBatchFolders.Location = new System.Drawing.Point(113, 297);
             this.button_ClearBatchFolders.Name = "button_ClearBatchFolders";
             this.button_ClearBatchFolders.Size = new System.Drawing.Size(119, 42);
             this.button_ClearBatchFolders.TabIndex = 2;
@@ -296,7 +296,7 @@ namespace Vpacker
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(328, 305);
+            this.button2.Location = new System.Drawing.Point(378, 297);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(119, 42);
             this.button2.TabIndex = 1;
@@ -306,10 +306,10 @@ namespace Vpacker
             // 
             // richTextBox_Folders
             // 
-            this.richTextBox_Folders.Location = new System.Drawing.Point(98, 58);
+            this.richTextBox_Folders.Location = new System.Drawing.Point(113, 24);
             this.richTextBox_Folders.Name = "richTextBox_Folders";
             this.richTextBox_Folders.ReadOnly = true;
-            this.richTextBox_Folders.Size = new System.Drawing.Size(382, 216);
+            this.richTextBox_Folders.Size = new System.Drawing.Size(384, 216);
             this.richTextBox_Folders.TabIndex = 0;
             this.richTextBox_Folders.Text = "";
             // 
@@ -318,7 +318,7 @@ namespace Vpacker
             this.checkBoxMultichunk.AutoSize = true;
             this.checkBoxMultichunk.Checked = true;
             this.checkBoxMultichunk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMultichunk.Location = new System.Drawing.Point(502, 323);
+            this.checkBoxMultichunk.Location = new System.Drawing.Point(266, 310);
             this.checkBoxMultichunk.Name = "checkBoxMultichunk";
             this.checkBoxMultichunk.Size = new System.Drawing.Size(79, 17);
             this.checkBoxMultichunk.TabIndex = 6;
@@ -344,7 +344,7 @@ namespace Vpacker
             // checkBox_manualvpkpath
             // 
             this.checkBox_manualvpkpath.AutoSize = true;
-            this.checkBox_manualvpkpath.Location = new System.Drawing.Point(21, 8);
+            this.checkBox_manualvpkpath.Location = new System.Drawing.Point(11, 8);
             this.checkBox_manualvpkpath.Name = "checkBox_manualvpkpath";
             this.checkBox_manualvpkpath.Size = new System.Drawing.Size(107, 17);
             this.checkBox_manualvpkpath.TabIndex = 17;
@@ -356,7 +356,7 @@ namespace Vpacker
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 28);
+            this.label8.Location = new System.Drawing.Point(6, 29);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(133, 25);
             this.label8.TabIndex = 16;
@@ -416,10 +416,10 @@ namespace Vpacker
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(302, 72);
+            this.richTextBox1.Location = new System.Drawing.Point(341, 8);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(295, 322);
+            this.richTextBox1.Size = new System.Drawing.Size(256, 333);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
@@ -430,7 +430,7 @@ namespace Vpacker
             // button_Refresh
             // 
             this.button_Refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Refresh.Location = new System.Drawing.Point(456, 450);
+            this.button_Refresh.Location = new System.Drawing.Point(480, 453);
             this.button_Refresh.Name = "button_Refresh";
             this.button_Refresh.Size = new System.Drawing.Size(143, 36);
             this.button_Refresh.TabIndex = 16;
@@ -443,7 +443,7 @@ namespace Vpacker
             // 
             this.comboBox_VpkGame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_VpkGame.FormattingEnabled = true;
-            this.comboBox_VpkGame.Location = new System.Drawing.Point(147, 456);
+            this.comboBox_VpkGame.Location = new System.Drawing.Point(163, 461);
             this.comboBox_VpkGame.Name = "comboBox_VpkGame";
             this.comboBox_VpkGame.Size = new System.Drawing.Size(282, 21);
             this.comboBox_VpkGame.TabIndex = 17;
