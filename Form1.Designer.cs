@@ -463,6 +463,7 @@ namespace Vpacker
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Padding = new System.Windows.Forms.Padding(3, 72, 3, 3);
+            this.Sizable = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Vpacker";
             this.Load += new System.EventHandler(this.Form1_Load);
