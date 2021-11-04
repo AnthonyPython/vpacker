@@ -109,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="box_5CE_icon.ico" />
-    <Content Include="Henyatsu_small.png" />
     <None Include="Resources\2a1dcf881660409d387809d193fce61b.png" />
   </ItemGroup>
   <ItemGroup>
